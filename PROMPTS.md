@@ -1,4 +1,5 @@
 # 🧠 Prompt Guide for AI Tutor App (Next.js + OpenAI)
+
 This document contains a collection of refined prompts designed for use with the Cursor AI Editor or similar AI code assistants. These prompts help automate and streamline common development tasks for a Next.js-based AI tutor app using tools like Zustand, Tailwind CSS, and OpenAI APIs.
 
 ## 📦 State Management

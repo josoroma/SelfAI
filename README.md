@@ -2,10 +2,14 @@
 
 SelfAI is an interactive AI-powered tutor designed to help users learn and practice languages or topics in a conversational, engaging, and psychologically supportive way. Built with Next.js, React 19, Zustand, Tailwind CSS, and OpenAI APIs, SelfAI combines chat, audio, and visual feedback to create a modern, responsive, and delightful learning experience.
 
+![SelfAI – Your smart, supportive, and endlessly patient AI tutor.](./selfai.jpg)
+
 ## 🚀 Product Vision
+
 SelfAI aims to be your always-available, endlessly patient tutor. It adapts to your needs, keeps you motivated, and provides concise, friendly, and helpful feedback. The app leverages the latest AI and UX best practices to foster a psychologically safe and effective learning environment.
 
 ## ✨ Features
+
 - **Conversational AI Tutor:** Chat with an AI that responds in a friendly, concise, and helpful manner, always asking relevant follow-up questions.
 - **Topic Selection:** Choose learning topics to focus your sessions.
 - **Markdown Rendering:** AI responses support markdown for clear formatting of examples, lists, and code.
@@ -16,6 +20,7 @@ SelfAI aims to be your always-available, endlessly patient tutor. It adapts to y
 - **Dark Mode & Accessibility:** Modern, accessible design with dynamic dark mode support.
 
 ## 🧠 Tutor Psychology & UX Principles
+
 - **Supportive & Encouraging:** The AI always maintains a positive, respectful tone, encouraging continued conversation and learning.
 - **Short, Clear, Precise:** Responses are concise to avoid cognitive overload.
 - **Conversational Flow:** The tutor always asks a single, relevant follow-up to keep you engaged.
@@ -64,12 +69,14 @@ bun dev
 Open [http://localhost:3000](http://localhost:3000) in your browser to use SelfAI.
 
 ## 📝 How It Works
+
 - Select a topic and start chatting with the AI tutor.
 - The AI responds with markdown-formatted answers, always asking a follow-up question.
 - Listen to responses with TTS and watch the real-time audio visualizer.
 - Change topics or language preferences at any time for a personalized experience.
 
 ## 🛠️ Tech Stack
+
 - **Next.js 15**
 - **React 19**
 - **Zustand** (state management)
@@ -79,6 +86,7 @@ Open [http://localhost:3000](http://localhost:3000) in your browser to use SelfA
 - **Custom Audio Visualizer**
 
 ## 🤝 Contributing
+
 Pull requests and issues are welcome! Please open an issue to discuss your ideas or report bugs.
 
 ---
