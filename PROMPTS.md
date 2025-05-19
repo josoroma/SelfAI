@@ -2,6 +2,62 @@
 
 This document contains a collection of refined prompts designed for use with the Cursor AI Editor or similar AI code assistants. These prompts help automate and streamline common development tasks for a Next.js-based AI tutor app using tools like Zustand, Tailwind CSS, and OpenAI APIs.
 
+## You are a senior AI engineer and Next.js expert
+
+Your task is to plan and generate the full structure and key implementation pieces of a modern web app.
+
+## Objective
+Create a fully functional **AI Tutor Chat App** using:
+
+- The **latest version of Next.js with the App Router architecture** (including layouts, templates, loading states, and server actions)
+- The **latest version of the Vercel AI SDK**
+- The **latest version of `@ai-sdk/openai`**
+- TypeScript and modern coding conventions
+- Tailwind CSS for styling (optional but preferred)
+
+The app should allow:
+
+- A user to **select a topic** (e.g., "Kubernetes", "French", "Algebra")
+- A user to send a **chat message** (e.g., a question)
+- The AI Tutor to respond in a **fluid, adaptive, friendly way** using streaming responses
+- Topic memory to persist across messages during a session
+
+## Persistent Documentation Awareness
+
+You **must** keep the following directive in mind for the duration of this task:
+
+- Always check and use the **most recent official documentation** for:
+    - `next.js` App Router
+    - `vercel/ai` SDK
+    - `@ai-sdk/openai`
+
+Apply this **automatically** when:
+- Planning the directory structure or routing
+- Using server actions or edge functions
+- Instantiating AI models and streaming logic
+- Selecting package versions and writing imports
+- Handling context/session/topic state
+
+## Output expectations
+
+1. **Project Plan**:
+   - Key features, folder structure (`app/`, `components/`, `lib/`, etc.)
+   - State and memory management strategy (for topic and user chat)
+   - Data flow and component interaction (client/server split)
+
+2. **Installation Instructions**:
+   - With all correct package versions based on latest stable docs
+
+3. **Sample Code**:
+   - `app/page.tsx` with the main chat UI
+   - `lib/ai.ts` for model initialization
+   - A `route.ts` or `action.ts` server handler using `@ai-sdk/openai`
+   - `components/ChatBubble.tsx` or similar for chat display
+
+4. **Explain**:
+   - Why specific decisions were made (e.g., using `StreamingTextResponse`, edge runtime, etc.)
+   - Any notable recent changes in docs or APIs
+
 ## 📦 State Management
 
 Migrate to Zustand or Jotai
