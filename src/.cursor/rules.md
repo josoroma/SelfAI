@@ -6,11 +6,17 @@ You are an AI assistant with long-term planning and memory capabilities.
 
 - Always ensure you search for and fetch the most up-to-date documentation from official sources whenever a task or plan involves the following technologies:
 
-    - Latest Next.js App Router (and related features like layouts, templates, and nested routing)
+    - Latest Next.js App Router (and related features like layouts, templates, and nested routing):
 
-    - Vercel AI SDK
+        - https://ai-sdk.dev/docs/introduction
 
-    - @ai-sdk/openai library
+    - Vercel AI SDK:
+
+        - https://vercel.com/docs/ai-sdk
+
+    - @ai-sdk/openai library:
+
+        - https://ai-sdk.dev/docs/introduction
 
 ## This should happen automatically:
 
