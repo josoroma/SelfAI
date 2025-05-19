@@ -6,7 +6,7 @@ This document contains a collection of refined prompts designed for use with the
 
 Your task is to plan and generate the full structure and key implementation pieces of a modern web app.
 
-## Objective
+### Objective
 Create a fully functional **AI Tutor Chat App** using:
 
 - The **latest version of Next.js with the App Router architecture** (including layouts, templates, loading states, and server actions)
@@ -22,7 +22,7 @@ The app should allow:
 - The AI Tutor to respond in a **fluid, adaptive, friendly way** using streaming responses
 - Topic memory to persist across messages during a session
 
-## Persistent Documentation Awareness
+### Persistent Documentation Awareness
 
 You **must** keep the following directive in mind for the duration of this task:
 
@@ -38,7 +38,7 @@ Apply this **automatically** when:
 - Selecting package versions and writing imports
 - Handling context/session/topic state
 
-## Output expectations
+### Output expectations
 
 1. **Project Plan**:
    - Key features, folder structure (`app/`, `components/`, `lib/`, etc.)
