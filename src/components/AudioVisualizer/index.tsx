@@ -1,7 +1,9 @@
 import React, { useEffect, useRef } from "react";
 import { AudioVisualizerProps } from "./types";
 import { DEFAULT_HEIGHT, DEFAULT_BAR_COLOR, DEFAULT_BAR_PLAYED_COLOR } from "./constants";
-import { useContainerWidth, useAudioElement, useAudioContextAnalyser } from "./hooks/useContainerWidth";
+import { useContainerWidth} from "./hooks/useContainerWidth";
+import { useAudioElement } from "./hooks/useAudioElement";
+import { useAudioContextAnalyser } from "./hooks/useAudioContextAnalyser";
 
 /**
  * AudioVisualizer
