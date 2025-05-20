@@ -38,4 +38,4 @@ export function useAudioContextAnalyser(audio: HTMLAudioElement | null, audioRea
   }, [audio, audioReady]);
 
   return { analyserRef };
-} 
+}

@@ -40,4 +40,4 @@ export function useAudioElement(audioBuffer: ArrayBuffer | null) {
   }, [audioBuffer]);
 
   return { audio, duration, audioReady };
-} 
+}

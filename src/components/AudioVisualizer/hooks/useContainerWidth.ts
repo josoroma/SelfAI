@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, RefObject } from "react";
+import { useEffect, useState, RefObject } from "react";
 
 /**
  * React hook to get the width and device pixel ratio (dpr) of a container element.
@@ -25,4 +25,4 @@ export function useContainerWidth<T extends HTMLElement>(ref: RefObject<T>) {
     };
   }, [ref]);
   return { width, dpr };
-} 
+}
