@@ -5,11 +5,12 @@ import { useConversationStore } from "@/store/conversation";
 import MessageBubble from "../MessageBubble";
 import TopicSelector from "../TopicSelector";
 import AudioVisualizer from "../AudioVisualizer";
-import { FaPlay, FaPause } from "react-icons/fa";
+import { FaPlay, FaPause, FaMicrophone } from "react-icons/fa";
 import { ChatMessage } from "./types";
 
 import { BUTTON_CLASS, INPUT_PLACEHOLDER, CONTAINER_CLASS } from "./constants";
 import { useChatAudio } from "./hooks/useChatAudio";
+import { useVoiceRecorder } from "./hooks/useVoiceRecorder";
 
 /**
  * ChatWindow
@@ -37,6 +38,15 @@ export default function ChatWindow() {
     handlePlay,
     handleSend,
   } = useChatAudio();
+
+  // Voice recorder hook for speech-to-text
+  const {
+    isRecording,
+    startRecording,
+    stopRecordingAndTranscribe
+  } = useVoiceRecorder({
+    onTranscribed: (text: string) => setInput(text)
+  });
 
   return (
     <div className={CONTAINER_CLASS}>
@@ -91,6 +101,18 @@ export default function ChatWindow() {
           onKeyDown={e => e.key === "Enter" && handleSend(input, messages, topic, userPrefs, addMessage, setInput, setLoading)}
           placeholder={INPUT_PLACEHOLDER}
         />
+        {/* Voice record button */}
+        <button
+          className={BUTTON_CLASS}
+          type="button"
+          aria-label={isRecording ? "Stop recording" : "Start recording"}
+          style={isRecording ? { color: 'red' } : {}}
+          onClick={isRecording ? stopRecordingAndTranscribe : startRecording}
+          disabled={loading}
+        >
+          <FaMicrophone />
+          {isRecording && <span className="ml-1">●</span>}
+        </button>
         <button
           className={BUTTON_CLASS}
           onClick={() => handleSend(input, messages, topic, userPrefs, addMessage, setInput, setLoading)}

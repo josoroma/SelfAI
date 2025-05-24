@@ -1,6 +1,6 @@
 import { useState, useRef, useCallback, useEffect } from "react";
 import { useConversationStore } from "@/store/conversation";
-import type { ChatMessage } from "@/types/chat";
+import { ChatMessage } from "../types";
 
 export function useChatAudio() {
   const audioPosition = useConversationStore((s) => s.audioPosition);
