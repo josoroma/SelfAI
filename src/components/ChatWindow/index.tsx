@@ -38,6 +38,7 @@ export default function ChatWindow() {
     handlePause,
     handlePlay,
     handleSend,
+    resetAudio,
   } = useChatAudio();
 
   // Voice recorder hook for speech-to-text
@@ -45,11 +46,17 @@ export default function ChatWindow() {
     isRecording,
     transcribing,
     stream,
-    startRecording,
+    startRecording: _startRecording,
     stopRecordingAndTranscribe
   } = useVoiceRecorder({
     onTranscribed: (text: string) => setInput(text)
   });
+
+  // Wrap startRecording to also reset audio
+  const startRecording = () => {
+    resetAudio();
+    _startRecording();
+  };
 
   return (
     <div className={CONTAINER_CLASS}>
@@ -118,7 +125,7 @@ export default function ChatWindow() {
           onClick={isRecording ? stopRecordingAndTranscribe : startRecording}
           disabled={loading || transcribing}
         >
-          {transcribing ? <ImSpinner2 className="animate-spin" /> : isRecording ? <FaStop /> : <FaMicrophone />}
+          {(transcribing || loading) ? <ImSpinner2 className="animate-spin" /> : isRecording ? <FaStop /> : <FaMicrophone />}
         </button>
         <input
           className="flex-1 border rounded px-3 py-2"
@@ -133,7 +140,7 @@ export default function ChatWindow() {
           onClick={() => handleSend(input, messages, topic, userPrefs, addMessage, setInput, setLoading)}
           disabled={loading || transcribing}
         >
-          {transcribing ? <ImSpinner2 className="animate-spin" /> : "Send"}
+          {(loading || transcribing) ? <ImSpinner2 className="animate-spin" /> : "Send"}
         </button>
       </div>
     </div>

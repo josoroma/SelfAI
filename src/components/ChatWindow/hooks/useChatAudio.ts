@@ -10,6 +10,13 @@ export function useChatAudio() {
   const [playing, setPlaying] = useState(false);
   const [pendingPlay, setPendingPlay] = useState(false);
 
+  const resetAudio = useCallback(() => {
+    setPlaying(false);
+    setAudioBuffer(null);
+    setAudioPosition(0);
+    setPendingPlay(false);
+  }, [setAudioPosition]);
+
   const speakWithOpenAITTS = useCallback(async (text: string) => {
     const response = await fetch("/api/tts", {
       method: "POST",
@@ -124,5 +131,6 @@ export function useChatAudio() {
     handlePause,
     handlePlay,
     handleSend,
+    resetAudio,
   };
 }
