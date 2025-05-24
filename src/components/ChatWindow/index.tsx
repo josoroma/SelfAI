@@ -6,6 +6,7 @@ import MessageBubble from "../MessageBubble";
 import TopicSelector from "../TopicSelector";
 import AudioVisualizer from "../AudioVisualizer";
 import { FaPlay, FaPause, FaMicrophone, FaStop } from "react-icons/fa";
+import { ImSpinner2 } from "react-icons/im";
 import { ChatMessage } from "./types";
 
 import { BUTTON_CLASS, INPUT_PLACEHOLDER, CONTAINER_CLASS } from "./constants";
@@ -42,6 +43,7 @@ export default function ChatWindow() {
   // Voice recorder hook for speech-to-text
   const {
     isRecording,
+    transcribing,
     startRecording,
     stopRecordingAndTranscribe
   } = useVoiceRecorder({
@@ -100,9 +102,9 @@ export default function ChatWindow() {
           aria-label={isRecording ? "Stop recording" : "Start recording"}
           style={isRecording ? { color: 'red' } : {}}
           onClick={isRecording ? stopRecordingAndTranscribe : startRecording}
-          disabled={loading}
+          disabled={loading || transcribing}
         >
-          {isRecording ? <FaStop /> : <FaMicrophone />}
+          {transcribing ? <ImSpinner2 className="animate-spin" /> : isRecording ? <FaStop /> : <FaMicrophone />}
         </button>
         <input
           className="flex-1 border rounded px-3 py-2"
@@ -115,9 +117,9 @@ export default function ChatWindow() {
         <button
           className={BUTTON_CLASS}
           onClick={() => handleSend(input, messages, topic, userPrefs, addMessage, setInput, setLoading)}
-          disabled={loading}
+          disabled={loading || transcribing}
         >
-          Send
+          {transcribing ? <ImSpinner2 className="animate-spin" /> : "Send"}
         </button>
       </div>
     </div>

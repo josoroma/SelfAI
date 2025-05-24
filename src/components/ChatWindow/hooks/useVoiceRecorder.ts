@@ -7,6 +7,7 @@ interface UseVoiceRecorderOptions {
 
 export function useVoiceRecorder({ onTranscribed, energyThreshold = 0.01 }: UseVoiceRecorderOptions) {
   const [isRecording, setIsRecording] = useState(false);
+  const [transcribing, setTranscribing] = useState(false);
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const audioChunksRef = useRef<Blob[]>([]);
 
@@ -27,7 +28,7 @@ export function useVoiceRecorder({ onTranscribed, energyThreshold = 0.01 }: UseV
 
   // Start recording audio from the user's microphone
   const startRecording = async () => {
-    if (isRecording) return;
+    if (isRecording || transcribing) return;
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
       const mediaRecorder = new MediaRecorder(stream, { mimeType: 'audio/webm' });
@@ -43,6 +44,7 @@ export function useVoiceRecorder({ onTranscribed, energyThreshold = 0.01 }: UseV
           onTranscribed(""); // No speech detected
           return;
         }
+        setTranscribing(true);
         // Send audio to /api/transcribe
         const formData = new FormData();
         formData.append('audio', audioBlob, 'recording.webm');
@@ -56,6 +58,8 @@ export function useVoiceRecorder({ onTranscribed, energyThreshold = 0.01 }: UseV
           onTranscribed(text);
         } catch (err) {
           onTranscribed('');
+        } finally {
+          setTranscribing(false);
         }
       };
       mediaRecorderRef.current = mediaRecorder;
@@ -76,6 +80,7 @@ export function useVoiceRecorder({ onTranscribed, energyThreshold = 0.01 }: UseV
 
   return {
     isRecording,
+    transcribing,
     startRecording,
     stopRecordingAndTranscribe
   };
