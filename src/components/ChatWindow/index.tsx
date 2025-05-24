@@ -5,7 +5,7 @@ import { useConversationStore } from "@/store/conversation";
 import MessageBubble from "../MessageBubble";
 import TopicSelector from "../TopicSelector";
 import AudioVisualizer from "../AudioVisualizer";
-import { FaPlay, FaPause, FaMicrophone } from "react-icons/fa";
+import { FaPlay, FaPause, FaMicrophone, FaStop } from "react-icons/fa";
 import { ChatMessage } from "./types";
 
 import { BUTTON_CLASS, INPUT_PLACEHOLDER, CONTAINER_CLASS } from "./constants";
@@ -59,7 +59,7 @@ export default function ChatWindow() {
         ))}
       </div>
       {/* Audio playback controls and visualizer */}
-      {audioBuffer && !loading && (
+      {audioBuffer && !loading && !isRecording && (
         <div className="flex items-center gap-2 mb-2">
           <div>
             {playing ? (
@@ -102,8 +102,7 @@ export default function ChatWindow() {
           onClick={isRecording ? stopRecordingAndTranscribe : startRecording}
           disabled={loading}
         >
-          <FaMicrophone />
-          {isRecording && <span className="ml-1">●</span>}
+          {isRecording ? <FaStop /> : <FaMicrophone />}
         </button>
         <input
           className="flex-1 border rounded px-3 py-2"
