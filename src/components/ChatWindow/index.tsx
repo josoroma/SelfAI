@@ -88,16 +88,16 @@ export default function ChatWindow() {
   return (
     <div className={CONTAINER_CLASS}>
       {/* Topic selection dropdown */}
-      <TopicSelector />
+      <div className="mb-2"><TopicSelector /></div>
       {/* Message list */}
-      <div className="flex-1 overflow-y-auto py-4">
+      <div className="flex-1 overflow-y-auto py-4 pb-2 px-2 bg-[#18181b] rounded-t-xl">
         {messages.map((msg, i) => (
           <MessageBubble key={i} role={msg.role} content={msg.content} />
         ))}
       </div>
       {/* Audio playback controls and visualizer */}
       {audioBuffer && !loading && !isRecording && (
-        <div className="flex items-center gap-2 mb-2">
+        <div className="flex items-center gap-2 mb-2 py-2">
           <div>
             {playing ? (
               <Button
@@ -134,7 +134,7 @@ export default function ChatWindow() {
       )}
       {/* Live audio visualizer during recording */}
       {isRecording && stream && (
-        <div className="mb-2">
+        <div className="mb-2 py-2">
           <AudioVisualizer
             audioBuffer={null}
             playing={true}
@@ -146,7 +146,7 @@ export default function ChatWindow() {
         </div>
       )}
       {/* Input area for sending new messages */}
-      <div className="flex p-2 gap-2 border-t">
+      <div className="flex p-2 pt-2 px-2 gap-2 border-t border-border bg-[#111] rounded-b-xl">
         {/* Voice record button - now on the left */}
         <Button
           type="button"
@@ -165,7 +165,6 @@ export default function ChatWindow() {
               name="input"
               render={({ field }) => (
                 <FormItem className="flex-1">
-                  <FormLabel>Message</FormLabel>
                   <FormControl>
                     <Input
                       {...field}

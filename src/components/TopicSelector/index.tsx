@@ -24,8 +24,8 @@ export default function TopicSelector() {
   const topics = DEFAULT_TOPICS;
 
   return (
-    <div className="py-2 flex gap-2 items-center">
-      <span>Topic:</span>
+    <div className="py-2 px-2 flex gap-2 items-center bg-transparent">
+      <span className="text-muted-foreground font-semibold">Topic:</span>
       <Select value={topic} onValueChange={changeTopic}>
         <SelectTrigger className="min-w-[140px]">
           <SelectValue placeholder="Select a topic" />

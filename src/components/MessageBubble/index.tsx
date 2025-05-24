@@ -20,7 +20,6 @@ export default function MessageBubble({ role, content }: MessageBubbleProps) {
       {/* Bubble with dynamic background based on role */}
       <span className={`${BUBBLE_CLASS} ${role === "assistant" ? ASSISTANT_BG : USER_BG}`}>
         <div className={INNER_CLASS}>
-          {/* Render message content as Markdown */}
           <ReactMarkdown>{content}</ReactMarkdown>
         </div>
       </span>
