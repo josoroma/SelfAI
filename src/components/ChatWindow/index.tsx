@@ -14,6 +14,18 @@ import { useChatAudio } from "./hooks/useChatAudio";
 import { useChatRecorder } from "./hooks/useChatRecorder";
 import { useChatFormSubmit } from "./hooks/useChatFormSubmit";
 import { useForm } from "./hooks/useForm";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import {
+  Form,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormControl,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 
 /**
  * ChatWindow
@@ -27,8 +39,17 @@ export default function ChatWindow() {
   const topic = useConversationStore((s) => s.topic);
   const userPrefs = useConversationStore((s) => s.userPrefs);
 
+  // Chat input schema
+  const formSchema = z.object({
+    input: z.string().min(1, "Message cannot be empty"),
+  });
+
   // React Hook Form for chat input
-  const { register, handleSubmit, setValue } = useForm();
+  const form = useForm({
+    resolver: zodResolver(formSchema),
+    defaultValues: { input: "" },
+  });
+  const { handleSubmit, setValue, control } = form;
 
   // Custom hook for managing audio playback and TTS
   const {
@@ -79,21 +100,25 @@ export default function ChatWindow() {
         <div className="flex items-center gap-2 mb-2">
           <div>
             {playing ? (
-              <button
+              <Button
+                type="button"
                 aria-label="Pause audio"
-                className={BUTTON_CLASS}
+                variant="outline"
                 onClick={handlePause}
+                className="mr-1"
               >
                 <FaPause />
-              </button>
+              </Button>
             ) : (
-              <button
+              <Button
+                type="button"
                 aria-label="Play audio"
-                className={BUTTON_CLASS}
+                variant="outline"
                 onClick={handlePlay}
+                className="mr-1"
               >
                 <FaPlay />
-              </button>
+              </Button>
             )}
           </div>
           <div className="flex-1">
@@ -123,37 +148,43 @@ export default function ChatWindow() {
       {/* Input area for sending new messages */}
       <div className="flex p-2 gap-2 border-t">
         {/* Voice record button - now on the left */}
-        <button
-          className={BUTTON_CLASS}
+        <Button
           type="button"
           aria-label={isRecording ? "Stop recording" : "Start recording"}
+          variant={isRecording ? "destructive" : "outline"}
           style={isRecording ? { color: 'red' } : {}}
           onClick={isRecording ? stopRecordingAndTranscribe : startRecording}
           disabled={loading || transcribing}
         >
           {(transcribing || loading) ? <ImSpinner2 className="animate-spin" /> : isRecording ? <FaStop /> : <FaMicrophone />}
-        </button>
-        <form onSubmit={handleSubmit(onSubmit)} className="flex-1 flex">
-          <input
-            className="flex-1 border rounded px-3 py-2"
-            {...register("input")}
-            disabled={loading || transcribing}
-            onKeyDown={e => {
-              if (e.key === "Enter" && !e.shiftKey) {
-                e.preventDefault();
-                handleSubmit(onSubmit)();
-              }
-            }}
-            placeholder={INPUT_PLACEHOLDER}
-          />
-          <button
-            className={BUTTON_CLASS}
-            type="submit"
-            disabled={loading || transcribing}
-          >
-            {(loading || transcribing) ? <ImSpinner2 className="animate-spin" /> : "Send"}
-          </button>
-        </form>
+        </Button>
+        <Form {...form}>
+          <form onSubmit={handleSubmit(onSubmit)} className="flex-1 flex">
+            <FormField
+              control={control}
+              name="input"
+              render={({ field }) => (
+                <FormItem className="flex-1">
+                  <FormLabel>Message</FormLabel>
+                  <FormControl>
+                    <Input
+                      {...field}
+                      disabled={loading || transcribing}
+                      placeholder={INPUT_PLACEHOLDER}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <Button
+              type="submit"
+              disabled={loading || transcribing}
+            >
+              {(loading || transcribing) ? <ImSpinner2 className="animate-spin" /> : "Send"}
+            </Button>
+          </form>
+        </Form>
       </div>
     </div>
   );

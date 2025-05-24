@@ -1,7 +1,5 @@
-import { useForm as useReactHookForm } from "react-hook-form";
+import { useForm as useReactHookForm, UseFormProps, UseFormReturn } from "react-hook-form";
 
-export function useForm() {
-  return useReactHookForm<{ input: string }>({
-    defaultValues: { input: "" }
-  });
+export function useForm(options?: UseFormProps<{ input: string }>): UseFormReturn<{ input: string }> {
+  return useReactHookForm<{ input: string }>(options);
 } 

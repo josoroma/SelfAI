@@ -13,7 +13,10 @@ import { ASSISTANT_BG, USER_BG, BUBBLE_CLASS, OUTER_CLASS, INNER_CLASS } from ".
  */
 export default function MessageBubble({ role, content }: MessageBubbleProps) {
   return (
-    <div className={OUTER_CLASS}>
+    <div
+      className={`${OUTER_CLASS} ${role === "user" ? "justify-end flex-row-reverse" : "justify-start flex-row"}`}
+      aria-label={role === "assistant" ? "Assistant message" : "User message"}
+    >
       {/* Bubble with dynamic background based on role */}
       <span className={`${BUBBLE_CLASS} ${role === "assistant" ? ASSISTANT_BG : USER_BG}`}>
         <div className={INNER_CLASS}>

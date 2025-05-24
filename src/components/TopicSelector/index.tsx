@@ -2,6 +2,13 @@
 
 import { DEFAULT_TOPICS } from "./constants";
 import { useConversationStore } from "@/store/conversation";
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectItem,
+} from "@/components/ui/select";
 
 /**
  * TopicSelector
@@ -19,16 +26,16 @@ export default function TopicSelector() {
   return (
     <div className="py-2 flex gap-2 items-center">
       <span>Topic:</span>
-      {/* Dropdown for selecting a topic. Updates global state on change. */}
-      <select
-        value={topic}
-        onChange={e => changeTopic(e.target.value)}
-        className="border border-gray-700 rounded p-2"
-      >
-        {topics.map(t => (
-          <option key={t}>{t}</option>
-        ))}
-      </select>
+      <Select value={topic} onValueChange={changeTopic}>
+        <SelectTrigger className="min-w-[140px]">
+          <SelectValue placeholder="Select a topic" />
+        </SelectTrigger>
+        <SelectContent>
+          {topics.map(t => (
+            <SelectItem key={t} value={t}>{t}</SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
     </div>
   );
 }
