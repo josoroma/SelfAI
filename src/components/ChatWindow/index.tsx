@@ -11,7 +11,9 @@ import { ChatMessage } from "./types";
 
 import { BUTTON_CLASS, INPUT_PLACEHOLDER, CONTAINER_CLASS } from "./constants";
 import { useChatAudio } from "./hooks/useChatAudio";
-import { useVoiceRecorder } from "./hooks/useVoiceRecorder";
+import { useChatRecorder } from "./hooks/useChatRecorder";
+import { useChatFormSubmit } from "./hooks/useChatFormSubmit";
+import { useForm } from "./hooks/useForm";
 
 /**
  * ChatWindow
@@ -25,9 +27,8 @@ export default function ChatWindow() {
   const topic = useConversationStore((s) => s.topic);
   const userPrefs = useConversationStore((s) => s.userPrefs);
 
-  // Local state for chat input and loading status
-  const [input, setInput] = useState("");
-  const [loading, setLoading] = useState(false);
+  // React Hook Form for chat input
+  const { register, handleSubmit, setValue } = useForm();
 
   // Custom hook for managing audio playback and TTS
   const {
@@ -41,22 +42,27 @@ export default function ChatWindow() {
     resetAudio,
   } = useChatAudio();
 
-  // Voice recorder hook for speech-to-text
+  // Voice recorder hook for speech-to-text (now via useChatRecorder)
   const {
     isRecording,
     transcribing,
     stream,
-    startRecording: _startRecording,
+    startRecording,
     stopRecordingAndTranscribe
-  } = useVoiceRecorder({
-    onTranscribed: (text: string) => setInput(text)
+  } = useChatRecorder({
+    resetAudio,
+    onTranscribed: (text: string) => setValue("input", text)
   });
 
-  // Wrap startRecording to also reset audio
-  const startRecording = () => {
-    resetAudio();
-    _startRecording();
-  };
+  // Form submit handler (now via useChatFormSubmit)
+  const { onSubmit, loading } = useChatFormSubmit({
+    handleSend,
+    messages,
+    topic,
+    userPrefs,
+    addMessage,
+    setValue,
+  });
 
   return (
     <div className={CONTAINER_CLASS}>
@@ -127,21 +133,27 @@ export default function ChatWindow() {
         >
           {(transcribing || loading) ? <ImSpinner2 className="animate-spin" /> : isRecording ? <FaStop /> : <FaMicrophone />}
         </button>
-        <input
-          className="flex-1 border rounded px-3 py-2"
-          value={input}
-          disabled={loading || transcribing}
-          onChange={e => setInput(e.target.value)}
-          onKeyDown={e => e.key === "Enter" && handleSend(input, messages, topic, userPrefs, addMessage, setInput, setLoading)}
-          placeholder={INPUT_PLACEHOLDER}
-        />
-        <button
-          className={BUTTON_CLASS}
-          onClick={() => handleSend(input, messages, topic, userPrefs, addMessage, setInput, setLoading)}
-          disabled={loading || transcribing}
-        >
-          {(loading || transcribing) ? <ImSpinner2 className="animate-spin" /> : "Send"}
-        </button>
+        <form onSubmit={handleSubmit(onSubmit)} className="flex-1 flex">
+          <input
+            className="flex-1 border rounded px-3 py-2"
+            {...register("input")}
+            disabled={loading || transcribing}
+            onKeyDown={e => {
+              if (e.key === "Enter" && !e.shiftKey) {
+                e.preventDefault();
+                handleSubmit(onSubmit)();
+              }
+            }}
+            placeholder={INPUT_PLACEHOLDER}
+          />
+          <button
+            className={BUTTON_CLASS}
+            type="submit"
+            disabled={loading || transcribing}
+          >
+            {(loading || transcribing) ? <ImSpinner2 className="animate-spin" /> : "Send"}
+          </button>
+        </form>
       </div>
     </div>
   );
