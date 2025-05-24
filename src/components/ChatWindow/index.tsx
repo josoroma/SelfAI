@@ -109,7 +109,7 @@ export default function ChatWindow() {
         <input
           className="flex-1 border rounded px-3 py-2"
           value={input}
-          disabled={loading}
+          disabled={loading || transcribing}
           onChange={e => setInput(e.target.value)}
           onKeyDown={e => e.key === "Enter" && handleSend(input, messages, topic, userPrefs, addMessage, setInput, setLoading)}
           placeholder={INPUT_PLACEHOLDER}
