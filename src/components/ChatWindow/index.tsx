@@ -93,15 +93,7 @@ export default function ChatWindow() {
       )}
       {/* Input area for sending new messages */}
       <div className="flex p-2 gap-2 border-t">
-        <input
-          className="flex-1 border rounded px-3 py-2"
-          value={input}
-          disabled={loading}
-          onChange={e => setInput(e.target.value)}
-          onKeyDown={e => e.key === "Enter" && handleSend(input, messages, topic, userPrefs, addMessage, setInput, setLoading)}
-          placeholder={INPUT_PLACEHOLDER}
-        />
-        {/* Voice record button */}
+        {/* Voice record button - now on the left */}
         <button
           className={BUTTON_CLASS}
           type="button"
@@ -113,6 +105,14 @@ export default function ChatWindow() {
           <FaMicrophone />
           {isRecording && <span className="ml-1">●</span>}
         </button>
+        <input
+          className="flex-1 border rounded px-3 py-2"
+          value={input}
+          disabled={loading}
+          onChange={e => setInput(e.target.value)}
+          onKeyDown={e => e.key === "Enter" && handleSend(input, messages, topic, userPrefs, addMessage, setInput, setLoading)}
+          placeholder={INPUT_PLACEHOLDER}
+        />
         <button
           className={BUTTON_CLASS}
           onClick={() => handleSend(input, messages, topic, userPrefs, addMessage, setInput, setLoading)}
