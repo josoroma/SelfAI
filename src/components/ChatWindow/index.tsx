@@ -44,6 +44,7 @@ export default function ChatWindow() {
   const {
     isRecording,
     transcribing,
+    stream,
     startRecording,
     stopRecordingAndTranscribe
   } = useVoiceRecorder({
@@ -91,6 +92,19 @@ export default function ChatWindow() {
               onEnd={handlePause}
             />
           </div>
+        </div>
+      )}
+      {/* Live audio visualizer during recording */}
+      {isRecording && stream && (
+        <div className="mb-2">
+          <AudioVisualizer
+            audioBuffer={null}
+            playing={true}
+            currentTime={0}
+            showProgressBar={false}
+            // @ts-ignore
+            liveStream={stream}
+          />
         </div>
       )}
       {/* Input area for sending new messages */}

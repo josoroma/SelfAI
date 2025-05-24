@@ -8,4 +8,6 @@ export interface AudioVisualizerProps {
   height?: number;
   barColor?: string;
   barPlayedColor?: string;
+  showProgressBar?: boolean; // Optional: hide progress bar if false
+  liveStream?: MediaStream; // Optional: live microphone stream for visualization
 }

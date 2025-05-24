@@ -2,8 +2,8 @@ import { useEffect, RefObject } from "react";
 
 /**
  * Draws the real-time frequency bar visualization on the canvas.
- * @param audio - The HTMLAudioElement to visualize.
- * @param audioReady - Boolean indicating if the audio is ready.
+ * @param audio - The HTMLAudioElement to visualize, or null for live.
+ * @param audioReady - Boolean indicating if the audio or live stream is ready.
  * @param analyserRef - Ref to the AnalyserNode.
  * @param canvasRef - Ref to the canvas element.
  * @param canvasWidth - Width of the canvas.
@@ -12,6 +12,7 @@ import { useEffect, RefObject } from "react";
  * @param barPlayedColor - Color of the played bar.
  * @param duration - Duration of the audio.
  * @param dpr - Device pixel ratio.
+ * @param showProgressBar - Whether to draw the progress bar (default: true)
  */
 export function useAudioVisualizerDraw(
   audio: HTMLAudioElement | null,
@@ -23,10 +24,11 @@ export function useAudioVisualizerDraw(
   barColor: string,
   barPlayedColor: string,
   duration: number,
-  dpr: number
+  dpr: number,
+  showProgressBar: boolean = true
 ) {
   useEffect(() => {
-    if (!audio || !audioReady) return;
+    if (!audioReady) return;
     const ctx = canvasRef.current?.getContext("2d");
     if (!ctx) return;
     const analyser = analyserRef.current;
@@ -43,7 +45,7 @@ export function useAudioVisualizerDraw(
         ctx.fillStyle = barColor;
         ctx.fillRect(x, height * dpr - barH, (canvasWidth * dpr) / bufferLength - 1, barH);
       }
-      if (duration) {
+      if (showProgressBar && audio && duration) {
         ctx.fillStyle = barPlayedColor;
         ctx.fillRect((audio.currentTime / duration) * canvasWidth * dpr, 0, 2 * dpr, height * dpr);
       }
@@ -51,5 +53,5 @@ export function useAudioVisualizerDraw(
     };
     draw();
     return () => cancelAnimationFrame(animationId);
-  }, [audio, canvasWidth, height, barColor, barPlayedColor, duration, audioReady, analyserRef, dpr]);
+  }, [audio, canvasWidth, height, barColor, barPlayedColor, duration, audioReady, analyserRef, dpr, showProgressBar]);
 }

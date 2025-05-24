@@ -9,6 +9,7 @@ import { useAudioEndHandler } from "./hooks/useAudioEndHandler";
 import { useAudioTimeUpdate } from "./hooks/useAudioTimeUpdate";
 import { useAudioVisualizerDraw } from "./hooks/useAudioVisualizerDraw";
 import { useCanvasSeekHandler } from "./hooks/useCanvasSeekHandler";
+import { useLiveAnalyser } from "./hooks/useLiveAnalyser";
 
 /**
  * AudioVisualizer
@@ -24,6 +25,8 @@ import { useCanvasSeekHandler } from "./hooks/useCanvasSeekHandler";
  *   - height: Height of the visualization (number, optional).
  *   - barColor: Color of the bars (string, optional).
  *   - barPlayedColor: Color of the played bar (string, optional).
+ *   - showProgressBar: Whether to show the progress bar (boolean, optional).
+ *   - liveStream: Optional live stream data (any, optional).
  */
 export default function AudioVisualizer({
   audioBuffer,
@@ -34,6 +37,8 @@ export default function AudioVisualizer({
   height = DEFAULT_HEIGHT,
   barColor = DEFAULT_BAR_COLOR,
   barPlayedColor = DEFAULT_BAR_PLAYED_COLOR,
+  showProgressBar = true,
+  liveStream,
 }: AudioVisualizerProps) {
   // Ref to the canvas element for drawing the visualization
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -43,20 +48,24 @@ export default function AudioVisualizer({
   // Get container width and device pixel ratio for sharp rendering
   const { width: canvasWidth, dpr } = useContainerWidth(containerRef as React.RefObject<HTMLElement>);
 
-  // Manage audio element and playback state from the provided audio buffer
-  const { audio, duration, audioReady } = useAudioElement(audioBuffer);
-
-  // Set up audio context and analyser for frequency data
-  const { analyserRef } = useAudioContextAnalyser(audio, audioReady);
-
-  // Sync playback state and current time with the audio element
-  useAudioPlaybackSync(audio, audioReady, playing, currentTime);
-
-  // Register a callback for when audio playback ends
-  useAudioEndHandler(audio, onEnd);
-
-  // Keep the parent component in sync with the audio element's current time
-  useAudioTimeUpdate(audio, onSeek);
+  // If liveStream is provided, use live analyser, else use audioBuffer logic
+  let analyserRef, audioReady, duration, audio;
+  if (liveStream) {
+    ({ analyserRef, audioReady } = useLiveAnalyser(liveStream));
+    duration = 0;
+    audio = null;
+  } else {
+    // Manage audio element and playback state from the provided audio buffer
+    ({ audio, duration, audioReady } = useAudioElement(audioBuffer));
+    // Set up audio context and analyser for frequency data
+    ({ analyserRef } = useAudioContextAnalyser(audio, audioReady));
+    // Sync playback state and current time with the audio element
+    useAudioPlaybackSync(audio, audioReady, playing, currentTime);
+    // Register a callback for when audio playback ends
+    useAudioEndHandler(audio, onEnd);
+    // Keep the parent component in sync with the audio element's current time
+    useAudioTimeUpdate(audio, onSeek);
+  }
 
   // Draw the real-time frequency bar visualization on the canvas
   useAudioVisualizerDraw(
@@ -69,7 +78,8 @@ export default function AudioVisualizer({
     barColor,
     barPlayedColor,
     duration,
-    dpr
+    dpr,
+    showProgressBar
   );
 
   // Returns a click handler for seeking in the audio when the canvas is clicked
